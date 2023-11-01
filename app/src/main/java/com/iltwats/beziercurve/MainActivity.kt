@@ -21,11 +21,12 @@ class MainActivity : AppCompatActivity() {
         val list = mutableListOf<DataPoint>()
         val range = (0..10)
 
-        (1..3).forEach { it ->
+        range.forEach { it ->
             when(it){
                 1->list.add(DataPoint(1f))
                 2->list.add(DataPoint(80f))
-                3->list.add(DataPoint(1f))
+                3->list.add(DataPoint(3f))
+                else -> list.add(DataPoint(range.random()*100f))
             }
             //list.add(DataPoint(range.random()*100f))
         }
