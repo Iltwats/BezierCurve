@@ -35,10 +35,14 @@ class BezierCurveView :View {
 
     }
 
-    private var p1: Point = Point(1000, 950)
+    private var p1: Point = Point(1100, 1050)
     private var p2: Point = Point(1500, 550)
-    private var cp1: Point = Point(1100, 600)
+    private var p3: Point = Point(1800,850)
+    private var p4: Point = p1
+    private var cp1: Point = Point(830, 780)
     private var cp2: Point? = null
+    private var cp3: Point = Point(2000,500)
+    private var cp4: Point = Point(1400,1250)
     fun setPoints(p1: Point, p2: Point, cp1: Point){
         this.p1 = p1
         this.p2 = p2
@@ -70,24 +74,29 @@ class BezierCurveView :View {
         canvas?.drawPath(path, controlLinePaint)
 
         path.reset()
-        path.moveTo(p1.x.toFloat(), p1.y.toFloat())
-        if (cp2 != null) {
-            path.cubicTo(cp1.x.toFloat(), cp1.y.toFloat(), cp2!!.x.toFloat(),
-                cp2!!.y.toFloat(), p2.x.toFloat(), p2.y.toFloat()
-            )
-        } else {
-            path.quadTo(cp1.x.toFloat(), cp1.y.toFloat(), p2.x.toFloat(), p2.y.toFloat() )
-            path.quadTo(cp1.x.toFloat()*2, cp1.y.toFloat(), p2.x.toFloat(), p2.y.toFloat() )
-            path.quadTo(cp1.x.toFloat()*3, cp1.y.toFloat(), p2.x.toFloat(), p2.y.toFloat() )
+        drawBezier(canvas, listOf(p1,p2,p3,p4), listOf(cp1,cp3,cp4))
+        invalidate()
+
+    }
+
+    private fun drawBezier(canvas: Canvas?, p: List<Point>, cp: List<Point>) {
+        for(i in 0..2){
+            path.moveTo(p[i].x.toFloat(), p[i].y.toFloat())
+            if (cp2 != null) {
+                path.cubicTo(cp1.x.toFloat(), cp1.y.toFloat(), cp2!!.x.toFloat(),
+                    cp2!!.y.toFloat(), this.p2.x.toFloat(), this.p2.y.toFloat()
+                )
+            } else {
+                path.quadTo(cp[i].x.toFloat(), cp[i].y.toFloat(), p[i+1].x.toFloat(), p[i+1].y.toFloat() )
+            }
+            canvas?.drawPath(path, curvePaint)
+
+            canvas?.drawCircle(p[i].x.toFloat(), p[i].y.toFloat(), 10f, pointPaint)
+            canvas?.drawCircle(p[i+1].x.toFloat(), p[i+1].y.toFloat(), 10f, pointPaint)
+            canvas?.drawCircle(cp[i].x.toFloat(), cp[i].y.toFloat(), 10f, pointPaint)
+            cp2?.let { canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), 10f, pointPaint) }
 
         }
-        canvas?.drawPath(path, curvePaint)
-
-        canvas?.drawCircle(p1.x.toFloat(), p1.y.toFloat(), 10f, pointPaint)
-        canvas?.drawCircle(p2.x.toFloat(), p2.y.toFloat(), 10f, pointPaint)
-        canvas?.drawCircle(cp1.x.toFloat(), cp1.y.toFloat(), 10f, pointPaint)
-        cp2?.let { canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), 10f, pointPaint) }
-        invalidate()
 
     }
 
@@ -97,7 +106,18 @@ class BezierCurveView :View {
 
         when(event?.action){
             MotionEvent.ACTION_DOWN-> Log.d("down","$x,$y")
-            MotionEvent.ACTION_MOVE-> cp1 = Point(x,y)
+            MotionEvent.ACTION_MOVE-> {
+                if(Point(x,y) == cp1){
+                    cp1 = Point(x,y)
+                    Log.d("cp1","$x,$y")
+                }else if(Point(x,y) == cp3){
+                    cp3 = Point(x,y)
+                    Log.d("cp3","$x,$y")
+                }else if(Point(x,y) == cp4){
+                    cp4 = Point(x,y)
+                    Log.d("cp4","$x,$y")
+                }
+            }
             MotionEvent.ACTION_UP-> Log.d("up","$x,$y")
         }
         return true
