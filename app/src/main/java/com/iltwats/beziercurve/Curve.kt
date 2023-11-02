@@ -1,13 +1,20 @@
 package com.iltwats.beziercurve
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PointF
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class Curve : View {
 
@@ -148,12 +155,14 @@ class Curve : View {
             if (points.isEmpty() && conPoint1.isEmpty() && conPoint2.isEmpty()) return
 
             path.reset()
+
+            //curve will start from this point
             path.moveTo(points.first().x, points.first().y)
 
             for (i in 1 until points.size) {
+                // (x,y) coordinates for connection point 1 and 2, final coordinates for last point for that curve
                 path.cubicTo(
-                    conPoint1[i - 1].x, conPoint1[i - 1].y, conPoint2[i - 1].x, conPoint2[i - 1].y,
-                    points[i].x, points[i].y
+                    conPoint1[i - 1].x, conPoint1[i - 1].y, conPoint2[i - 1].x, conPoint2[i - 1].y, points[i].x, points[i].y
                 )
             }
 

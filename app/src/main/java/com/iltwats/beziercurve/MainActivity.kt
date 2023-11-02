@@ -1,8 +1,7 @@
 package com.iltwats.beziercurve
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.iltwats.beziercurve.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,14 +11,15 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        activityMainBinding.curve.setCurveBorderColor(R.color.blue)
-        activityMainBinding.curve.addDataPoints(generateDataPoint())
+//        activityMainBinding.curve.setCurveBorderColor(R.color.blue)
+//        activityMainBinding.curve.addDataPoints(generateDataPoint())
+      //  activityMainBinding.bezierCurveView2.setPoints(Point(100,250),Point(400,250), Point(200,600))
 
     }
 
     private fun generateDataPoint(): List<DataPoint> {
         val list = mutableListOf<DataPoint>()
-        val range = (0..10)
+        val range = (1..2)
 
         range.forEach { it ->
             when(it){
