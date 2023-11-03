@@ -38,7 +38,6 @@ class BezierCurveView :View {
     private var p1: Point = Point(1100, 1050)
     private var p2: Point = Point(1500, 550)
     private var p3: Point = Point(1800,850)
-    private var p4: Point = p1
     private var cp1: Point = Point(830, 780)
     private var cp2: Point? = null
     private var cp3: Point = Point(2000,500)
@@ -67,6 +66,11 @@ class BezierCurveView :View {
         color = Color.parseColor("#990000")
         style = Paint.Style.FILL_AND_STROKE
     }
+    private val centerPaint: Paint = Paint().apply {
+        strokeWidth = 2f
+        color = Color.parseColor("#F9D342")
+        style = Paint.Style.FILL_AND_STROKE
+    }
 
     private val path: Path = Path()
     override fun onDraw(canvas: Canvas?) {
@@ -74,7 +78,10 @@ class BezierCurveView :View {
         canvas?.drawPath(path, controlLinePaint)
 
         path.reset()
-        drawBezier(canvas, listOf(p1,p2,p3,p4), listOf(cp1,cp3,cp4))
+        drawBezier(canvas, listOf(p1,p2,p3,p1), listOf(cp1,cp3,cp4))
+        val xCenter = (p1.x+p2.x+p3.x)/3;
+        val yCenter = (p1.y+p2.y+p3.y)/3;
+        canvas?.drawCircle(xCenter.toFloat(), yCenter.toFloat(), 60f, centerPaint)
         invalidate()
 
     }
@@ -121,5 +128,10 @@ class BezierCurveView :View {
             MotionEvent.ACTION_UP-> Log.d("up","$x,$y")
         }
         return true
+    }
+
+    override fun setOnDragListener(l: OnDragListener?) {
+        l.onDrag()
+        super.setOnDragListener(l)
     }
 }
