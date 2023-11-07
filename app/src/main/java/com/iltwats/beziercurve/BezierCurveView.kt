@@ -1,18 +1,14 @@
 package com.iltwats.beziercurve
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.Point
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 
 
-class BezierCurveView :View {
+class BezierCurveView : View {
     constructor(context: Context?) : super(context) {
         init(null)
     }
@@ -38,21 +34,20 @@ class BezierCurveView :View {
 
     private var p1: Point = Point(1100, 1050)
     private var p2: Point = Point(1500, 550)
-    private var p3: Point = Point(1800,850)
+    private var p3: Point = Point(1800, 850)
     private var cp1: Point = Point(830, 780)
     private var cp2: Point? = null
-    private var cp3: Point = Point(2000,500)
-    private var cp4: Point = Point(1400,1250)
+    private var cp3: Point = Point(2000, 500)
+    private var cp4: Point = Point(1400, 1250)
 
-    fun setPoints(p1: Point, p2: Point, cp1: Point){
+    fun setPoints(p1: Point, p2: Point, cp1: Point) {
         this.p1 = p1
         this.p2 = p2
         this.cp1 = cp1
     }
 
-    fun setP1(p1:Point){
+    fun setP1(p1: Point) {
         this.p1 = p1
-
         invalidate()
     }
 
@@ -86,26 +81,32 @@ class BezierCurveView :View {
         canvas?.drawPath(path, controlLinePaint)
 
         path.reset()
-        drawBezier(canvas, listOf(p1,p2,p3,p1), listOf(cp1,cp3,cp4))
-        val xCenter = (p1.x+p2.x+p3.x)/3;
-        val yCenter = (p1.y+p2.y+p3.y)/3;
+        drawBezier(canvas, listOf(p1, p2, p3, p1), listOf(cp1, cp3, cp4))
+        val xCenter = (p1.x + p2.x + p3.x) / 3
+        val yCenter = (p1.y + p2.y + p3.y) / 3
         canvas?.drawCircle(xCenter.toFloat(), yCenter.toFloat(), 60f, centerPaint)
 
     }
 
     private fun drawBezier(canvas: Canvas?, p: List<Point>, cp: List<Point>) {
-        for(i in 0..2){
+        for (i in 0..2) {
             path.moveTo(p[i].x.toFloat(), p[i].y.toFloat())
             if (cp2 != null) {
-                path.cubicTo(cp1.x.toFloat(), cp1.y.toFloat(), cp2!!.x.toFloat(),
+                path.cubicTo(
+                    cp1.x.toFloat(), cp1.y.toFloat(), cp2!!.x.toFloat(),
                     cp2!!.y.toFloat(), this.p2.x.toFloat(), this.p2.y.toFloat()
                 )
             } else {
-                path.quadTo(cp[i].x.toFloat(), cp[i].y.toFloat(), p[i+1].x.toFloat(), p[i+1].y.toFloat() )
+                path.quadTo(
+                    cp[i].x.toFloat(),
+                    cp[i].y.toFloat(),
+                    p[i + 1].x.toFloat(),
+                    p[i + 1].y.toFloat()
+                )
             }
             canvas?.drawPath(path, curvePaint)
             canvas?.drawCircle(p[i].x.toFloat(), p[i].y.toFloat(), 10f, pointPaint)
-            canvas?.drawCircle(p[i+1].x.toFloat(), p[i+1].y.toFloat(), 10f, pointPaint)
+            canvas?.drawCircle(p[i + 1].x.toFloat(), p[i + 1].y.toFloat(), 10f, pointPaint)
             canvas?.drawCircle(cp[i].x.toFloat(), cp[i].y.toFloat(), 10f, pointPaint)
             cp2?.let { canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), 10f, pointPaint) }
             //path.moveTo(1400f,450f)
@@ -141,11 +142,21 @@ class BezierCurveView :View {
     }
 
     override fun onDragEvent(event: DragEvent?): Boolean {
-        when(event?.action){
-            DragEvent.ACTION_DROP->{
+        when (event?.action) {
+            DragEvent.ACTION_DROP -> {
 
             }
         }
         return super.onDragEvent(event)
+    }
+
+    fun setP3(point: Point) {
+        this.p3 = point
+        invalidate()
+    }
+
+    fun setP2(point: Point) {
+        this.p2 = point
+        invalidate()
     }
 }
