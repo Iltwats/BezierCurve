@@ -7,9 +7,10 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Point
 import android.util.AttributeSet
-import android.util.Log
+import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+
 
 class BezierCurveView :View {
     constructor(context: Context?) : super(context) {
@@ -42,12 +43,18 @@ class BezierCurveView :View {
     private var cp2: Point? = null
     private var cp3: Point = Point(2000,500)
     private var cp4: Point = Point(1400,1250)
+
     fun setPoints(p1: Point, p2: Point, cp1: Point){
         this.p1 = p1
         this.p2 = p2
         this.cp1 = cp1
     }
 
+    fun setP1(p1:Point){
+        this.p1 = p1
+
+        invalidate()
+    }
 
     private val curvePaint: Paint = Paint().apply {
         strokeWidth = 6f
@@ -75,6 +82,7 @@ class BezierCurveView :View {
     private val path: Path = Path()
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+//        invalidate()
         canvas?.drawPath(path, controlLinePaint)
 
         path.reset()
@@ -82,7 +90,6 @@ class BezierCurveView :View {
         val xCenter = (p1.x+p2.x+p3.x)/3;
         val yCenter = (p1.y+p2.y+p3.y)/3;
         canvas?.drawCircle(xCenter.toFloat(), yCenter.toFloat(), 60f, centerPaint)
-        invalidate()
 
     }
 
@@ -97,41 +104,48 @@ class BezierCurveView :View {
                 path.quadTo(cp[i].x.toFloat(), cp[i].y.toFloat(), p[i+1].x.toFloat(), p[i+1].y.toFloat() )
             }
             canvas?.drawPath(path, curvePaint)
-
             canvas?.drawCircle(p[i].x.toFloat(), p[i].y.toFloat(), 10f, pointPaint)
             canvas?.drawCircle(p[i+1].x.toFloat(), p[i+1].y.toFloat(), 10f, pointPaint)
             canvas?.drawCircle(cp[i].x.toFloat(), cp[i].y.toFloat(), 10f, pointPaint)
             cp2?.let { canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), 10f, pointPaint) }
-
+            //path.moveTo(1400f,450f)
         }
 
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val x: Int = event?.x?.toInt() ?: 0
-        val y: Int = event?.y?.toInt() ?: 0
-
-        when(event?.action){
-            MotionEvent.ACTION_DOWN-> Log.d("down","$x,$y")
-            MotionEvent.ACTION_MOVE-> {
-                if(Point(x,y) == cp1){
-                    cp1 = Point(x,y)
-                    Log.d("cp1","$x,$y")
-                }else if(Point(x,y) == cp3){
-                    cp3 = Point(x,y)
-                    Log.d("cp3","$x,$y")
-                }else if(Point(x,y) == cp4){
-                    cp4 = Point(x,y)
-                    Log.d("cp4","$x,$y")
-                }
-            }
-            MotionEvent.ACTION_UP-> Log.d("up","$x,$y")
-        }
+//        val x: Int = event?.x?.toInt() ?: 0
+//        val y: Int = event?.y?.toInt() ?: 0
+//
+//        when(event?.action){
+//            MotionEvent.ACTION_DOWN-> Log.d("down","$x,$y")
+//            MotionEvent.ACTION_MOVE-> {
+//                if(Point(x,y) == cp1){
+//                    cp1 = Point(x,y)
+//                    Log.d("cp1","$x,$y")
+//                }else if(Point(x,y) == cp3){
+//                    cp3 = Point(x,y)
+//                    Log.d("cp3","$x,$y")
+//                }else if(Point(x,y) == cp4){
+//                    cp4 = Point(x,y)
+//                    Log.d("cp4","$x,$y")
+//                }
+//            }
+//            MotionEvent.ACTION_UP-> Log.d("up","$x,$y")
+//        }
         return true
     }
 
     override fun setOnDragListener(l: OnDragListener?) {
-        l.onDrag()
         super.setOnDragListener(l)
+    }
+
+    override fun onDragEvent(event: DragEvent?): Boolean {
+        when(event?.action){
+            DragEvent.ACTION_DROP->{
+
+            }
+        }
+        return super.onDragEvent(event)
     }
 }
