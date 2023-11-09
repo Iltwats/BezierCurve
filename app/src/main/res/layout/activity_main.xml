@@ -15,37 +15,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SeekBar
-        android:id="@+id/p1"
+    <RelativeLayout
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="236dp"
-        android:rotation="-47"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/p2"
-        app:layout_constraintTop_toBottomOf="@+id/p2"
-        app:layout_constraintVertical_bias="0.219" />
+        android:layout_height="300dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginStart="185dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <SeekBar
-        android:id="@+id/p3"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="4dp"
-        android:rotation="80"
-        app:layout_constraintBottom_toTopOf="@+id/p2"
-        app:layout_constraintEnd_toEndOf="@+id/p2"
-        app:layout_constraintTop_toTopOf="@+id/bezierCurveView"
-        app:layout_constraintVertical_bias="0.687" />
+        <SeekBar
+            android:id="@+id/p1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="-54dp"
+            android:rotation="-47"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/p2"
+            app:layout_constraintTop_toBottomOf="@+id/p2"
+            app:layout_constraintVertical_bias="0.219"
+            tools:ignore="NotSibling" />
+    </RelativeLayout>
 
-    <SeekBar
-        android:id="@+id/p2"
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
-        android:layout_marginEnd="276dp"
-        android:rotation="182"
-        app:layout_constraintEnd_toEndOf="@+id/bezierCurveView"
-        app:layout_constraintTop_toTopOf="@+id/bezierCurveView" />
+        android:layout_height="300dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="90dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SeekBar
+            android:id="@+id/p2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:rotation="80"
+            app:layout_constraintVertical_bias="0.687" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="260dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SeekBar
+            android:id="@+id/p3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:rotation="182"
+            app:layout_constraintVertical_bias="0.687" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

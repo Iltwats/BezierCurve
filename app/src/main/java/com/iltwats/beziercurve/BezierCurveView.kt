@@ -1,7 +1,11 @@
 package com.iltwats.beziercurve
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Point
 import android.util.AttributeSet
 import android.view.DragEvent
 import android.view.MotionEvent
@@ -53,8 +57,14 @@ class BezierCurveView : View {
 
     private val curvePaint: Paint = Paint().apply {
         strokeWidth = 6f
-        color = Color.parseColor("#333333")
+        color = Color.parseColor("#7DDEBB")
         style = Paint.Style.STROKE
+        alpha = 128
+    }
+    private val fillPaint: Paint = Paint().apply {
+        color = Color.parseColor("#7DDEBB")
+        style = Paint.Style.FILL
+        alpha = 128
     }
 
     private val controlLinePaint: Paint = Paint().apply {
@@ -75,17 +85,33 @@ class BezierCurveView : View {
     }
 
     private val path: Path = Path()
+    private val tPath: Path = Path()
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-//        invalidate()
-        canvas?.drawPath(path, controlLinePaint)
-
         path.reset()
+
+        //canvas?.drawPath(path, controlLinePaint)
+
         drawBezier(canvas, listOf(p1, p2, p3, p1), listOf(cp1, cp3, cp4))
+
+        // triangle
+        setTriangle(p1,p2,p3,canvas)
+        canvas?.drawPath(path, fillPaint)
+
+        // centroid of the triangle
         val xCenter = (p1.x + p2.x + p3.x) / 3
         val yCenter = (p1.y + p2.y + p3.y) / 3
+        //fillPaint.setShadowLayer(60f, xCenter.toFloat(), yCenter.toFloat(),Color.BLACK)
         canvas?.drawCircle(xCenter.toFloat(), yCenter.toFloat(), 60f, centerPaint)
+    }
 
+    private fun setTriangle(p1: Point, p2: Point, p3: Point, canvas: Canvas?) {
+        tPath.reset()
+        tPath.moveTo(p1.x.toFloat(), p1.y.toFloat())
+        tPath.lineTo(p2.x.toFloat(), p2.y.toFloat())
+        tPath.lineTo(p3.x.toFloat(), p3.y.toFloat())
+        tPath.close()
+        canvas!!.drawPath(tPath, fillPaint)
     }
 
     private fun drawBezier(canvas: Canvas?, p: List<Point>, cp: List<Point>) {
@@ -105,11 +131,12 @@ class BezierCurveView : View {
                 )
             }
             canvas?.drawPath(path, curvePaint)
+
+            // red dots
             canvas?.drawCircle(p[i].x.toFloat(), p[i].y.toFloat(), 10f, pointPaint)
             canvas?.drawCircle(p[i + 1].x.toFloat(), p[i + 1].y.toFloat(), 10f, pointPaint)
             canvas?.drawCircle(cp[i].x.toFloat(), cp[i].y.toFloat(), 10f, pointPaint)
             cp2?.let { canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), 10f, pointPaint) }
-            //path.moveTo(1400f,450f)
         }
 
     }

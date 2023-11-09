@@ -1,12 +1,12 @@
 package com.iltwats.beziercurve
 
 import android.content.Context
-import android.graphics.Matrix
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.iltwats.beziercurve.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         val thumbCenterX = thumbBounds.exactCenterX()
         val thumbCenterY = thumbBounds.exactCenterY()
 
+
 // Calculate the position of the thumb relative to the window
         val thumbX = seekBarX + thumbCenterX
         val thumbY = seekBarY + thumbCenterY
@@ -105,14 +106,19 @@ class MainActivity : AppCompatActivity() {
         val rotatedThumbY = points[1]
 
         // Consider margins within the ConstraintLayout
-        val layoutParams = seekBar.layoutParams as ConstraintLayout.LayoutParams
+        val layoutParams = seekBar.layoutParams as RelativeLayout.LayoutParams
         val topMargin = layoutParams.topMargin
         val endMargin = layoutParams.marginEnd
 
         // Calculate the absolute position of the thumb including margins
         val absoluteThumbX = rotatedThumbX + endMargin
         val absoluteThumbY = rotatedThumbY + topMargin
-        return Pair(absoluteThumbX.toInt(), absoluteThumbY.toInt())
+        Log.d("x-",(absoluteThumbX.toInt()+seekBar.rotation.toInt()*18).toString())
+        Log.d("y-",(absoluteThumbY.toInt()+seekBar.rotation.toInt()*10).toString())
+        if(seekBar.rotation.toInt()>90){
+            return Pair(absoluteThumbX.toInt()+seekBar.rotation.toInt()*18,absoluteThumbY.toInt()+seekBar.rotation.toInt()*10)
+        }
+        return Pair(absoluteThumbX.toInt()+seekBar.rotation.toInt()*10, absoluteThumbY.toInt()-seekBar.rotation.toInt()*10)
     }
 
 
