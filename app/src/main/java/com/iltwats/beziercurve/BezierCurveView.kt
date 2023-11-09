@@ -84,8 +84,8 @@ class BezierCurveView : View {
         style = Paint.Style.FILL_AND_STROKE
     }
 
-    private val path: Path = Path()
-    private val tPath: Path = Path()
+    private val path = Path()
+    private val tPath = Path()
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         path.reset()

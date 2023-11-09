@@ -75,21 +75,21 @@ class MainActivity : AppCompatActivity() {
         val seekBarHeight = seekBar.height
 
         // Calculate the absolute position of the thumb within the SeekBar
-//        val thumbX = (seekBarWidth - thumbWidth) * seekBar.progress / seekBar.max
-//        val thumbY = (seekBarHeight - thumbHeight) / 2
+        //        val thumbX = (seekBarWidth - thumbWidth) * seekBar.progress / seekBar.max
+        //        val thumbY = (seekBarHeight - thumbHeight) / 2
         val location = IntArray(2)
         seekBar.getLocationInWindow(location)
 
         val seekBarX = location[0]
         val seekBarY = location[1]
 
-// Calculate the thumb's relative position within the SeekBar
+        // Calculate the thumb's relative position within the SeekBar
         val thumbBounds = seekBar.thumb.bounds
         val thumbCenterX = thumbBounds.exactCenterX()
         val thumbCenterY = thumbBounds.exactCenterY()
 
 
-// Calculate the position of the thumb relative to the window
+        // Calculate the position of the thumb relative to the window
         val thumbX = seekBarX + thumbCenterX
         val thumbY = seekBarY + thumbCenterY
         // Consider the rotation of the SeekBar
